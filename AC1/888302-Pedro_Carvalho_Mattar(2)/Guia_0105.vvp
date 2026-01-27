@@ -1,0 +1,181 @@
+#! /c/Source/iverilog-install/bin/vvp
+:ivl_version "12.0 (devel)" "(s20150603-1539-g2693dd32b)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision + 0;
+:vpi_module "C:\iverilog\lib\ivl\system.vpi";
+:vpi_module "C:\iverilog\lib\ivl\vhdl_sys.vpi";
+:vpi_module "C:\iverilog\lib\ivl\vhdl_textio.vpi";
+:vpi_module "C:\iverilog\lib\ivl\v2005_math.vpi";
+:vpi_module "C:\iverilog\lib\ivl\va_math.vpi";
+S_000001a7a4c4fe40 .scope module, "Guia_0105" "Guia_0105" 2 5;
+ .timescale 0 0;
+v000001a7a462ad50 .array "ano", 6 0, 7 0;
+v000001a7a462adf0 .array "cidade", 13 0, 7 0;
+v000001a7a462ae90 .array "hexa", 4 0, 7 0;
+v000001a7a462af30 .array "octal", 4 0, 7 0;
+v000001a7a4c12490 .array "pucmg", 5 0, 7 0;
+    .scope S_000001a7a4c4fe40;
+T_0 ;
+    %pushi/vec4 80, 0, 8; draw_string_vec4
+    %ix/load 4, 0, 0;
+    %flag_set/imm 4, 0;
+    %store/vec4a v000001a7a4c12490, 4, 0;
+    %pushi/vec4 85, 0, 8; draw_string_vec4
+    %ix/load 4, 1, 0;
+    %flag_set/imm 4, 0;
+    %store/vec4a v000001a7a4c12490, 4, 0;
+    %pushi/vec4 67, 0, 8; draw_string_vec4
+    %ix/load 4, 2, 0;
+    %flag_set/imm 4, 0;
+    %store/vec4a v000001a7a4c12490, 4, 0;
+    %pushi/vec4 45, 0, 8; draw_string_vec4
+    %ix/load 4, 3, 0;
+    %flag_set/imm 4, 0;
+    %store/vec4a v000001a7a4c12490, 4, 0;
+    %pushi/vec4 77, 0, 8; draw_string_vec4
+    %ix/load 4, 4, 0;
+    %flag_set/imm 4, 0;
+    %store/vec4a v000001a7a4c12490, 4, 0;
+    %pushi/vec4 71, 0, 8; draw_string_vec4
+    %ix/load 4, 5, 0;
+    %flag_set/imm 4, 0;
+    %store/vec4a v000001a7a4c12490, 4, 0;
+    %pushi/vec4 50, 0, 8; draw_string_vec4
+    %ix/load 4, 0, 0;
+    %flag_set/imm 4, 0;
+    %store/vec4a v000001a7a462ad50, 4, 0;
+    %pushi/vec4 48, 0, 8; draw_string_vec4
+    %ix/load 4, 1, 0;
+    %flag_set/imm 4, 0;
+    %store/vec4a v000001a7a462ad50, 4, 0;
+    %pushi/vec4 50, 0, 8; draw_string_vec4
+    %ix/load 4, 2, 0;
+    %flag_set/imm 4, 0;
+    %store/vec4a v000001a7a462ad50, 4, 0;
+    %pushi/vec4 53, 0, 8; draw_string_vec4
+    %ix/load 4, 3, 0;
+    %flag_set/imm 4, 0;
+    %store/vec4a v000001a7a462ad50, 4, 0;
+    %pushi/vec4 45, 0, 8; draw_string_vec4
+    %ix/load 4, 4, 0;
+    %flag_set/imm 4, 0;
+    %store/vec4a v000001a7a462ad50, 4, 0;
+    %pushi/vec4 48, 0, 8; draw_string_vec4
+    %ix/load 4, 5, 0;
+    %flag_set/imm 4, 0;
+    %store/vec4a v000001a7a462ad50, 4, 0;
+    %pushi/vec4 50, 0, 8; draw_string_vec4
+    %ix/load 4, 6, 0;
+    %flag_set/imm 4, 0;
+    %store/vec4a v000001a7a462ad50, 4, 0;
+    %pushi/vec4 66, 0, 8; draw_string_vec4
+    %ix/load 4, 0, 0;
+    %flag_set/imm 4, 0;
+    %store/vec4a v000001a7a462adf0, 4, 0;
+    %pushi/vec4 101, 0, 8; draw_string_vec4
+    %ix/load 4, 1, 0;
+    %flag_set/imm 4, 0;
+    %store/vec4a v000001a7a462adf0, 4, 0;
+    %pushi/vec4 108, 0, 8; draw_string_vec4
+    %ix/load 4, 2, 0;
+    %flag_set/imm 4, 0;
+    %store/vec4a v000001a7a462adf0, 4, 0;
+    %pushi/vec4 111, 0, 8; draw_string_vec4
+    %ix/load 4, 3, 0;
+    %flag_set/imm 4, 0;
+    %store/vec4a v000001a7a462adf0, 4, 0;
+    %pushi/vec4 32, 0, 8; draw_string_vec4
+    %ix/load 4, 4, 0;
+    %flag_set/imm 4, 0;
+    %store/vec4a v000001a7a462adf0, 4, 0;
+    %pushi/vec4 72, 0, 8; draw_string_vec4
+    %ix/load 4, 5, 0;
+    %flag_set/imm 4, 0;
+    %store/vec4a v000001a7a462adf0, 4, 0;
+    %pushi/vec4 111, 0, 8; draw_string_vec4
+    %ix/load 4, 6, 0;
+    %flag_set/imm 4, 0;
+    %store/vec4a v000001a7a462adf0, 4, 0;
+    %pushi/vec4 114, 0, 8; draw_string_vec4
+    %ix/load 4, 7, 0;
+    %flag_set/imm 4, 0;
+    %store/vec4a v000001a7a462adf0, 4, 0;
+    %pushi/vec4 105, 0, 8; draw_string_vec4
+    %ix/load 4, 8, 0;
+    %flag_set/imm 4, 0;
+    %store/vec4a v000001a7a462adf0, 4, 0;
+    %pushi/vec4 122, 0, 8; draw_string_vec4
+    %ix/load 4, 9, 0;
+    %flag_set/imm 4, 0;
+    %store/vec4a v000001a7a462adf0, 4, 0;
+    %pushi/vec4 111, 0, 8; draw_string_vec4
+    %ix/load 4, 10, 0;
+    %flag_set/imm 4, 0;
+    %store/vec4a v000001a7a462adf0, 4, 0;
+    %pushi/vec4 110, 0, 8; draw_string_vec4
+    %ix/load 4, 11, 0;
+    %flag_set/imm 4, 0;
+    %store/vec4a v000001a7a462adf0, 4, 0;
+    %pushi/vec4 116, 0, 8; draw_string_vec4
+    %ix/load 4, 12, 0;
+    %flag_set/imm 4, 0;
+    %store/vec4a v000001a7a462adf0, 4, 0;
+    %pushi/vec4 101, 0, 8; draw_string_vec4
+    %ix/load 4, 13, 0;
+    %flag_set/imm 4, 0;
+    %store/vec4a v000001a7a462adf0, 4, 0;
+    %pushi/vec4 84, 0, 8;
+    %ix/load 4, 0, 0;
+    %flag_set/imm 4, 0;
+    %store/vec4a v000001a7a462af30, 4, 0;
+    %pushi/vec4 97, 0, 8;
+    %ix/load 4, 1, 0;
+    %flag_set/imm 4, 0;
+    %store/vec4a v000001a7a462af30, 4, 0;
+    %pushi/vec4 114, 0, 8;
+    %ix/load 4, 2, 0;
+    %flag_set/imm 4, 0;
+    %store/vec4a v000001a7a462af30, 4, 0;
+    %pushi/vec4 100, 0, 8;
+    %ix/load 4, 3, 0;
+    %flag_set/imm 4, 0;
+    %store/vec4a v000001a7a462af30, 4, 0;
+    %pushi/vec4 101, 0, 8;
+    %ix/load 4, 4, 0;
+    %flag_set/imm 4, 0;
+    %store/vec4a v000001a7a462af30, 4, 0;
+    %pushi/vec4 78, 0, 8;
+    %ix/load 4, 0, 0;
+    %flag_set/imm 4, 0;
+    %store/vec4a v000001a7a462ae90, 4, 0;
+    %pushi/vec4 111, 0, 8;
+    %ix/load 4, 1, 0;
+    %flag_set/imm 4, 0;
+    %store/vec4a v000001a7a462ae90, 4, 0;
+    %pushi/vec4 105, 0, 8;
+    %ix/load 4, 2, 0;
+    %flag_set/imm 4, 0;
+    %store/vec4a v000001a7a462ae90, 4, 0;
+    %pushi/vec4 116, 0, 8;
+    %ix/load 4, 3, 0;
+    %flag_set/imm 4, 0;
+    %store/vec4a v000001a7a462ae90, 4, 0;
+    %pushi/vec4 101, 0, 8;
+    %ix/load 4, 4, 0;
+    %flag_set/imm 4, 0;
+    %store/vec4a v000001a7a462ae90, 4, 0;
+    %vpi_call 2 32 "$display", "Guia_0105 - Tests" {0 0 0};
+    %vpi_call 2 35 "$display", "a.) \042PUC-MG\042 = %h %h %h %h %h %h", &A<v000001a7a4c12490, 0>, &A<v000001a7a4c12490, 1>, &A<v000001a7a4c12490, 2>, &A<v000001a7a4c12490, 3>, &A<v000001a7a4c12490, 4>, &A<v000001a7a4c12490, 5> {0 0 0};
+    %vpi_call 2 38 "$display", "b.) \0422025-02\042 = %h %h %h %h %h %h %h", &A<v000001a7a462ad50, 0>, &A<v000001a7a462ad50, 1>, &A<v000001a7a462ad50, 2>, &A<v000001a7a462ad50, 3>, &A<v000001a7a462ad50, 4>, &A<v000001a7a462ad50, 5>, &A<v000001a7a462ad50, 6> {0 0 0};
+    %vpi_call 2 41 "$display", "c.) \042Belo Horizonte\042 = " {0 0 0};
+    %vpi_call 2 42 "$display", "%b %b %b %b %b %b %b %b", &A<v000001a7a462adf0, 0>, &A<v000001a7a462adf0, 1>, &A<v000001a7a462adf0, 2>, &A<v000001a7a462adf0, 3>, &A<v000001a7a462adf0, 4>, &A<v000001a7a462adf0, 5>, &A<v000001a7a462adf0, 6>, &A<v000001a7a462adf0, 7> {0 0 0};
+    %vpi_call 2 43 "$display", "%b %b %b %b %b %b", &A<v000001a7a462adf0, 8>, &A<v000001a7a462adf0, 9>, &A<v000001a7a462adf0, 10>, &A<v000001a7a462adf0, 11>, &A<v000001a7a462adf0, 12>, &A<v000001a7a462adf0, 13> {0 0 0};
+    %vpi_call 2 46 "$display", "d.) 124 141 162 144 145 (8) = %s%s%s%s%s", &A<v000001a7a462af30, 0>, &A<v000001a7a462af30, 1>, &A<v000001a7a462af30, 2>, &A<v000001a7a462af30, 3>, &A<v000001a7a462af30, 4> {0 0 0};
+    %vpi_call 2 49 "$display", "e.) 4E 6F 69 74 65 (16) = %s%s%s%s%s", &A<v000001a7a462ae90, 0>, &A<v000001a7a462ae90, 1>, &A<v000001a7a462ae90, 2>, &A<v000001a7a462ae90, 3>, &A<v000001a7a462ae90, 4> {0 0 0};
+    %end;
+    .thread T_0;
+# The file index is used to find the file name in the following table.
+:file_names 3;
+    "N/A";
+    "<interactive>";
+    "Guia_0105.v";
