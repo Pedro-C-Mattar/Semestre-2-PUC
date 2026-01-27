@@ -1,1 +1,1 @@
-# Semestre-2-PUC
+# Segundo Semestre Ciencias da Computacao na PUC
