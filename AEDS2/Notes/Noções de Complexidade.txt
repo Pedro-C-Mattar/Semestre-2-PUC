@@ -1,0 +1,180 @@
+Noções de Complexidade:
+
+
+H é teta, que é aproximadamente (mais ou menos).
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Alguns algoritmos, assim como a pesquisa binaria, tem custo logaritmo,
+
+. H (Lg N)
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+O custo logaritmo esta associado a problemas nos quais, a cada passo do algoritmo, ele reduz o escopo de busca pela metade.
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+O custo da pesquisa sequencial é,
+
+. H (N)
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+O limite inferior do problema de ordenação é,
+
+. H (N * Lg N)
+
+
+Vários algoritmos alcançam esse limite, como quick sort, heap sort e merge sort. 
+ 
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Os algoritmos básicos de ordenação tem custo de,
+
+. H (N^2)
+
+
+Por exemplo, Seleção, Bolha, e Inserção.
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Teto sempre arredonda pra cima, e piso sempre arredonda pra baixo.
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Percepção de taxa de crescimento do gráfico, principalmente no grau da função.
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Melhor caso, menos operações. Pior caso, mais operações.
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+*Quando tivermos um laço de repetição no qual o contador começa com 0, repete enquanto menor que N e o incremento é de 1 em 1, teremos N repetições.*
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Sempre que o custo de um algoritmo for sistematicamente dividido pela metade, teremos um custo logaritmo.
+
+. lg(N)
+. lg(N) + 1, quando não é potência de 2
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Obs: Na prova, teremos uma questão cuja o enunciado sera similar ao dos exercícios resolvidos da unidade sobre Noções de Complexidade
+Desafios --> Faça os exercícios dos slides.
+Desafios --> Pegue os códigos de aeds1 e contabilize as repetições.
+Desafios --> Na pasta fonte, estude os 3 códigos em java.
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Funções de Complexidade:
+
+
+O algoritmo de Dijkstra tem custo de, 
+
+. H (N * lg N)
+
+O algoritmo de Dijkstra encontra o menor caminho entre dois pontos. 
+Um problema importante é o problema do caixeiro viajante, que consiste em sair de um vértice, passar por todos os demais, e retornar ao inicial. O custo desse problema é,
+
+. H (N!)
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Na ordenação interna, as duas operações mais importantes são, a comparação entre registros e a movimentação entre registros.
+Registros são os elementos do array.
+
+
+. c(N) = N^2 / 2  -  N / 2
+. m(N) = 3N - 3
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Funções de Complexidade
+
+. Função de complexidade de Tempo: mensura o tempo necessário na execução de um algoritmo.
+
+. Função de complexidade de Espaço: mensura a quantidade de memória necessário na execução de um algoritmo.
+
+. Função de Complexidade de Energia: mensura a energia consumida na execução de um algoritmo.
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Calculo de Complexidade
+
+. Laços: limite superior
+
+. Métodos: custo do método
+
+. Recursão: equação de recorrência
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Algoritmo Ótimo 
+
+. Algoritmo cujo o custo é igual ao menor custo possível. Comparar todos elementos.
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+Estudar --> os três primeiros algoritmos de máximo e mínimo apresentado no livro do Ziviane.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
