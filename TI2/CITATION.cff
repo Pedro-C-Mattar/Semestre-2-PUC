@@ -1,0 +1,28 @@
+cff-version: 1.0.0
+message: Please cite this software using these metadata.
+title: Learnind
+authors:
+  - family-names: Mattar
+    given-names: Pedro Carvalho
+  - family-names: Coelho
+    given-names: Bruno Alejandro Montero Commisso
+  - family-names: Bargas
+    given-names: Laura Dias
+  - family-names: Silva
+    given-names: Yuri Penido
+  - family-names: Vieira de Vasconcelos
+    given-names: Amália Soares
+    name-suffix: Professora
+    affiliation: PUC Minas
+  - family-names: Machado
+    given-names: Max do Val
+    name-suffix: Professor
+    affiliation: PUC Minas
+keywords:
+  - ensino online
+  - videoaulas
+  - plataforma educacional
+repository-code: https://github.com/ICEI-PUC-Minas-CC-TI/plmg-cc-ti2-2025-2-learnind
+license: CC-BY-4.0
+version: 1.0.0
+date-released: 2025-09-24
