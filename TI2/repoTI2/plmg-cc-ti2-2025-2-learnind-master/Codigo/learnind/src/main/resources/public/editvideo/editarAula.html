@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Editar Aula - Learnind</title>
+  <link rel="stylesheet" href="editarAula.css" />
+  <link rel="stylesheet" href="/common.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="container header-content">
+      <h1 class="logo"><a id="logo-link" href="/landPage/index.html">Learnind</a></h1>
+
+      <!-- search removed on this page (only on dashboard) -->
+
+      <nav>
+        <ul>
+          <li><a href="#">Minhas Aulas</a></li>
+          <li><a href="#">Perfil</a></li>
+        </ul>
+      </nav>
+
+      <div class="profile">
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Perfil" class="avatar"  onclick="window.location.href='../perfil/perfil.html'" class="avatar"/>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== CONTEÚDO PRINCIPAL ===== -->
+  <main class="edit-aula-container">
+    <section class="edit-aula-card">
+      <h2><i class="fa-solid fa-pen-to-square"></i> Editar Aula</h2>
+      <p>Atualize as informações da sua aula abaixo:</p>
+
+      <form id="edit-video-form" class="edit-aula-form" action="/video/update" method="post">
+        <input type="hidden" id="video-id" name="id" />
+        <div class="form-group">
+          <label for="titulo">Título da Aula</label>
+          <input type="text" id="titulo" name="titulo" value="Introdução ao HTML" />
+        </div>
+
+        <div class="form-group">
+          <label for="descricao">Descrição</label>
+          <textarea id="descricao" name="descricao" rows="4">Aprenda os fundamentos de HTML e como estruturar páginas web corretamente.</textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="url">URL do Vídeo</label>
+          <input type="url" id="url" name="url" value="https://www.youtube.com/watch?v=dQw4w9WgXcQ" />
+        </div>
+
+        <div class="form-group">
+          <label for="categoria">Categoria</label>
+          <select id="categoria" name="id_categoria">
+            <option value="">Carregando...</option>
+          </select>
+        </div>
+
+        <div class="preview-video">
+          <h3>Pré-visualização</h3>
+          <iframe id="videoPreview" src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+        </div>
+
+        <div class="buttons">
+          <button type="submit" class="btn save"><i class="fa-solid fa-check"></i> Salvar Alterações</button>
+          <button type="button" class="btn cancel"><i class="fa-solid fa-xmark"></i> Cancelar</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <p>© 2025 Learnind — <a href="#">Termos</a> • <a href="#">Privacidade</a></p>
+  </footer>
+
+  <script>
+    // Atualiza a prévia do vídeo ao mudar o link
+    const urlInput = document.getElementById('url');
+    const videoPreview = document.getElementById('videoPreview');
+    urlInput.addEventListener('input', () => {
+      const url = urlInput.value;
+      const videoId = url.split('v=')[1];
+      if (videoId) {
+        const embedUrl = `https://www.youtube.com/embed/${videoId}`;
+        videoPreview.src = embedUrl;
+      }
+    });
+
+    async function loadCategorias() {
+      try {
+        const res = await fetch('/categorias');
+        if (!res.ok) return;
+        const cats = await res.json();
+        const sel = document.getElementById('categoria');
+        sel.innerHTML = '';
+        // add an empty option so the video can have no category
+        const empty = document.createElement('option');
+        empty.value = '';
+        empty.textContent = '— Sem categoria —';
+        sel.appendChild(empty);
+        cats.forEach(c => {
+          const opt = document.createElement('option');
+          opt.value = c.idCategoria;
+          opt.textContent = c.nome;
+          sel.appendChild(opt);
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function getQueryParam(name) {
+      const url = new URL(window.location.href);
+      return url.searchParams.get(name);
+    }
+
+    async function loadVideoToEdit() {
+      const id = getQueryParam('id');
+      if (!id) return;
+      try {
+        const res = await fetch('/videos');
+        if (!res.ok) return;
+        const videos = await res.json();
+        const v = videos.find(x => String(x.idVideo) === String(id));
+        if (!v) return;
+        document.getElementById('video-id').value = v.idVideo;
+        document.getElementById('titulo').value = v.titulo || '';
+        document.getElementById('descricao').value = v.descricao || '';
+        document.getElementById('url').value = v.url || '';
+        // set preview
+        const vid = v.url ? v.url.split('v=')[1] : null;
+        if (vid) videoPreview.src = `https://www.youtube.com/embed/${vid}`;
+        // set category after categories loaded
+        await loadCategorias();
+        if (v.idCategoria) document.getElementById('categoria').value = v.idCategoria;
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadVideoToEdit();
+    });
+  </script>
+  <script>
+    // set logo link depending on auth state (logged -> dashboard, else -> landing)
+    (async () => {
+      try {
+        const res = await fetch('/usuario/me', { credentials: 'same-origin' });
+        const el = document.getElementById('logo-link');
+        if (el) el.href = (res && res.ok) ? '/homePage/dashboard.html' : '/landPage/index.html';
+      } catch (e) {
+        const el = document.getElementById('logo-link');
+        if (el) el.href = '/landPage/index.html';
+      }
+    })();
+  </script>
+</body>
+</html>

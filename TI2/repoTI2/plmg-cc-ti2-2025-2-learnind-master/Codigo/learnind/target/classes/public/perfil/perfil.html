@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Perfil - Learnind</title>
+  <link rel="stylesheet" href="perfil.css" />
+  <link rel="stylesheet" href="/common.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="container header-content">
+      <h1 class="logo"><a id="logo-link" href="/landPage/index.html">Learnind</a></h1>
+
+      <!-- search removed on this page (only on dashboard) -->
+
+      <nav>
+        <ul>
+          <!-- navigation links removed; kept empty intentionally -->
+        </ul>
+      </nav>
+
+      <div class="profile">
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Perfil" class="avatar" />
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== CONTEÚDO PRINCIPAL ===== -->
+  <main class="profile-container">
+    <section class="profile-card">
+      <div class="profile-header">
+        <img id="profile-pic" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Foto de Perfil" class="profile-pic" />
+        <h2 id="profile-name">Usuário</h2>
+        <p class="email" id="profile-email"></p>
+      </div>
+
+      <div class="profile-info">
+        <h3>Informações Pessoais</h3>
+        <p><strong>Nome:</strong> <span id="info-nome"></span></p>
+        <p><strong>Email:</strong> <span id="info-email"></span></p>
+        <p><strong>Data de nascimento:</strong> <span id="info-nascimento"></span></p>
+        <p><strong>Sexo:</strong> <span id="info-sexo"></span></p>
+      </div>
+
+      <div class="profile-actions">
+        <button class="btn purple" onclick="window.location.href='../adicionarVideo/adicionarVideo.html'"><i class="fa-solid fa-plus"></i> Adicionar Aula</button>
+        <button class="btn blue" onclick="window.location.href='../minhasAulas/minhasAulas.html'"><i class="fa-solid fa-book"></i> Minhas Aulas</button>
+      </div>
+
+      <hr class="divider" />
+
+      <div class="account-actions">
+        <button class="btn edit" onclick="window.location.href='../editarperfil/editarperfil.html'"><i class="fa-solid fa-pen"></i> Editar Perfil</button>
+        <form id="logout-form" action="/usuario/logout" method="post">
+          <button type="submit" class="btn logout"><i class="fa-solid fa-right-from-bracket"></i> Desconectar</button>
+        </form>
+        <form id="delete-form" action="/usuario/me/delete" method="post">
+          <button type="submit" class="btn delete"><i class="fa-solid fa-trash"></i> Apagar Perfil</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // fetch current user and fill fields
+    fetch('/usuario/me').then(r => {
+      if (!r.ok) throw new Error('not auth');
+      return r.json();
+    }).then(u => {
+      document.getElementById('profile-name').textContent = u.nome || 'Usuário';
+      document.getElementById('profile-email').textContent = u.email || '';
+      document.getElementById('info-nome').textContent = u.nome || '';
+      document.getElementById('info-email').textContent = u.email || '';
+      document.getElementById('info-nascimento').textContent = u.dataNascimento || '';
+      const sexoMap = { 'M': 'Masculino', 'F': 'Feminino', 'O': 'Outro' };
+      document.getElementById('info-sexo').textContent = sexoMap[u.sexo] || u.sexo || '';
+    }).catch(e => {
+      window.location.href = '/login/login.html';
+    });
+  </script>
+
+    <script>
+      // set logo link depending on auth state (logged -> dashboard, else -> landing)
+      (async () => {
+        try {
+          const res = await fetch('/usuario/me', { credentials: 'same-origin' });
+          const el = document.getElementById('logo-link');
+          if (el) el.href = (res && res.ok) ? '/homePage/dashboard.html' : '/landPage/index.html';
+        } catch (e) {
+          const el = document.getElementById('logo-link');
+          if (el) el.href = '/landPage/index.html';
+        }
+      })();
+    </script>
+
+      <script>
+        // Intercepta o submit do form de deletar perfil para pedir confirmação
+        // e usar fetch com credentials (mais robusto que confiar no submit HTML em alguns cenários).
+        (function(){
+          const form = document.getElementById('delete-form');
+          if (!form) return;
+          form.addEventListener('submit', async (ev) => {
+            ev.preventDefault();
+            if (!confirm('Tem certeza que deseja apagar seu perfil? Esta ação é irreversível.')) return;
+            try {
+              const res = await fetch(form.action || '/usuario/me/delete', {
+                method: form.method?.toUpperCase() || 'POST',
+                credentials: 'same-origin'
+              });
+              // se o servidor redirecionar, navigate para a URL de redirecionamento
+              if (res.redirected) {
+                window.location.href = res.url;
+                return;
+              }
+              if (res.ok) {
+                // fallback caso não haja redirect: leva para landing
+                window.location.href = '/landPage/index.html';
+                return;
+              }
+              const txt = await res.text().catch(() => null);
+              alert(txt || 'Erro ao apagar perfil');
+            } catch (err) {
+              console.error('delete profile failed', err);
+              alert('Erro ao apagar perfil');
+            }
+          });
+        })();
+      </script>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <p>© 2025 Learnind — <a href="#">Termos</a> • <a href="#">Privacidade</a></p>
+  </footer>
+</body>
+</html>

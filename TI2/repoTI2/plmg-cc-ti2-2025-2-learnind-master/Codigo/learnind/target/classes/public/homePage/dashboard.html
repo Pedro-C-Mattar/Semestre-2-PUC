@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel | Learnind</title>
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="/common.css">
+  <!-- Ícones do Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <!-- ====== HEADER ====== -->
+  <header>
+    <div class="container header-content">
+      <h1 class="logo"><a id="logo-link" href="/landPage/index.html">Learnind</a></h1>
+
+      <div class="search-box">
+        <input id="search-input" type="text" placeholder="🔍 Buscar aulas...">
+      </div>
+
+      <nav>
+        <ul>
+          <!-- navigation links removed; only on landing page -->
+        </ul>
+      </nav>
+
+      <!-- ÍCONE DE PERFIL -->
+      <div class="profile">
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Perfil" onclick="window.location.href='../perfil/perfil.html'" class="avatar" >
+      </div>
+    </div>
+  </header>
+
+  <!-- ====== CONTEÚDO PRINCIPAL ====== -->
+  <main class="main-container">
+    <aside class="sidebar">
+      <ul>
+        <li><a href="#" id="sidebar-home">Início</a></li>
+        <li>Disciplinas:</li>
+        <li id="categories-list">
+          <!-- categories will be injected here -->
+        </li>
+  <li><a href="/categoria/cat.html">Configurações</a></li>
+      </ul>
+    </aside>
+
+    <section class="content">
+      <h2>Aulas Disponíveis</h2>
+
+      <div id="videos-container" class="video-grid">
+        <!-- Os vídeos aparecerão dinamicamente aqui -->
+      </div>
+    </section>
+  </main>
+
+  <!-- ====== FOOTER ====== -->
+  <footer>
+    <p>© 2025 Learnind — <a href="#">Termos</a> • <a href="#">Privacidade</a></p>
+  </footer>
+
+  <script>
+    const videosContainer = document.getElementById('videos-container');
+    const searchInput = document.getElementById('search-input');
+
+    function getYouTubeId(url) {
+      if (!url) return null;
+      // try common patterns: v=, youtu.be/, embed/
+      const m = url.match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{11})/);
+      return m ? m[1] : null;
+    }
+
+    async function loadVideos(query, categoriaId) {
+      let url = '/videos';
+      if (categoriaId) {
+        url += `?categoria=${encodeURIComponent(categoriaId)}`;
+      } else if (query) {
+        url += `?q=${encodeURIComponent(query)}`;
+      }
+      const res = await fetch(url);
+      if (!res.ok) return;
+      const videos = await res.json();
+      videosContainer.innerHTML = '';
+      if (!videos || videos.length === 0) {
+        videosContainer.innerHTML = '<p>Nenhum vídeo encontrado.</p>';
+        return;
+      }
+      videos.forEach(video => {
+        const vid = getYouTubeId(video.url);
+        const thumbHtml = vid ? `<img src="https://img.youtube.com/vi/${vid}/hqdefault.jpg" alt="thumbnail">` : '';
+        const card = document.createElement('div');
+        card.classList.add('video-card');
+        card.innerHTML = `
+          <div class="thumbnail">${thumbHtml}</div>
+          <div class="info">
+            <h3>${escapeHtml(video.titulo)}</h3>
+            <p>${escapeHtml(video.descricao || '')}</p>
+            <button onclick="window.location.href='../video/video.html?id=${video.idVideo}'">Assistir</button>
+          </div>
+        `;
+        videosContainer.appendChild(card);
+      });
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    // debounce search to reduce requests and improve precision
+    function debounce(fn, wait) {
+      let t = null;
+      return function(...args) {
+        clearTimeout(t);
+        t = setTimeout(() => fn.apply(this, args), wait);
+      };
+    }
+
+    const handleSearch = debounce((e) => {
+      const q = e.target.value && e.target.value.trim();
+      // if empty, load all videos
+      loadVideos(q && q.length > 0 ? q : null);
+    }, 300);
+
+    searchInput.addEventListener('input', handleSearch);
+
+    async function loadCategories() {
+      try {
+        const res = await fetch('/categorias');
+        if (!res.ok) return;
+        const cats = await res.json();
+        const container = document.getElementById('categories-list');
+        container.innerHTML = '';
+        cats.forEach(c => {
+          const li = document.createElement('div');
+          li.className = 'category-item';
+          li.innerHTML = `<a href="#" data-id="${c.idCategoria}">${c.nome}</a>`;
+          li.addEventListener('click', (e) => {
+            e.preventDefault();
+            const id = e.currentTarget.querySelector('a').dataset.id;
+            loadVideos(null, id);
+          });
+          container.appendChild(li);
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    // initial load
+    loadCategories();
+    loadVideos();
+
+    // make sidebar Início reload all videos
+    const sidebarHome = document.getElementById('sidebar-home');
+    if (sidebarHome) {
+      sidebarHome.addEventListener('click', (e) => {
+        e.preventDefault();
+        loadVideos();
+      });
+    }
+  </script>
+  <script>
+    // set logo link depending on auth state (logged -> dashboard, else -> landing)
+    (async () => {
+      try {
+        const res = await fetch('/usuario/me', { credentials: 'same-origin' });
+        const el = document.getElementById('logo-link');
+        if (el) el.href = (res && res.ok) ? '/homePage/dashboard.html' : '/landPage/index.html';
+      } catch (e) {
+        const el = document.getElementById('logo-link');
+        if (el) el.href = '/landPage/index.html';
+      }
+    })();
+  </script>
+</body>
+</html>

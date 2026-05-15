@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adicionar Aula - Learnind</title>
+  <link rel="stylesheet" href="adicionarVideo.css" />
+  <link rel="stylesheet" href="/common.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="container header-content">
+      <h1 class="logo"><a id="logo-link" href="/landPage/index.html">Learnind</a></h1>
+
+      <!-- search removed on this page (only on dashboard) -->
+
+      <nav>
+        <ul>
+          <!-- navigation links removed; kept empty intentionally -->
+        </ul>
+      </nav>
+
+      <div class="profile">
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Perfil" onclick="window.location.href='../perfil/perfil.html'" class="avatar"
+        />
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== CONTEÚDO PRINCIPAL ===== -->
+  <main class="main-container">
+
+    <!-- Área de Adicionar Aula -->
+    <section class="add-class-section">
+      <div class="add-class-card">
+        <h2><i class="fa-solid fa-circle-plus"></i> Adicionar Nova Aula</h2>
+        <p>Preencha as informações abaixo para cadastrar sua aula.</p>
+
+        <form id="add-video-form" class="add-class-form" action="/video/add" method="post">
+          <label for="nome">Nome da Aula</label>
+          <input type="text" id="nome" name="nome" placeholder="Digite o nome da aula" required />
+
+          <label for="descricao">Descrição</label>
+          <textarea
+            id="descricao"
+            name="descricao"
+            placeholder="Escreva uma breve descrição sobre o conteúdo da aula..."
+            rows="5"
+            required
+          ></textarea>
+
+          <label for="url">URL do Vídeo</label>
+          <input
+            type="url"
+            id="url"
+            name="url"
+            placeholder="Cole aqui o link do vídeo (YouTube, Vimeo, etc)"
+            required
+          />
+
+          <label for="categoria">Categoria</label>
+          <select id="categoria" name="id_categoria">
+            <option value="">Carregando categorias...</option>
+          </select>
+
+          <div class="action-buttons">
+            <button type="submit" class="btn purple">
+              <i class="fa-solid fa-upload"></i> Adicionar Aula
+            </button>
+            <button type="reset" class="btn gray">
+              <i class="fa-solid fa-rotate-left"></i> Limpar
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <p>© 2025 Learnind — <a href="#">Termos</a> • <a href="#">Privacidade</a></p>
+  </footer>
+    <script>
+      async function loadCategorias() {
+        try {
+          const res = await fetch('/categorias');
+          if (!res.ok) return;
+          const cats = await res.json();
+          const sel = document.getElementById('categoria');
+          sel.innerHTML = '';
+          // add an empty option to allow no category
+          const empty = document.createElement('option');
+          empty.value = '';
+          empty.textContent = '— Sem categoria —';
+          sel.appendChild(empty);
+          cats.forEach(c => {
+            const opt = document.createElement('option');
+            opt.value = c.idCategoria;
+            opt.textContent = c.nome;
+            sel.appendChild(opt);
+          });
+        } catch (e) {
+          console.error(e);
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        loadCategorias();
+      });
+    </script>
+      <script>
+        // set logo link depending on auth state (logged -> dashboard, else -> landing)
+        (async () => {
+          try {
+            const res = await fetch('/usuario/me', { credentials: 'same-origin' });
+            const el = document.getElementById('logo-link');
+            if (el) el.href = (res && res.ok) ? '/homePage/dashboard.html' : '/landPage/index.html';
+          } catch (e) {
+            const el = document.getElementById('logo-link');
+            if (el) el.href = '/landPage/index.html';
+          }
+        })();
+      </script>
+</body>
+</html>

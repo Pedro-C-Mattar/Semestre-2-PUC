@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula - Learnind</title>
+  <link rel="stylesheet" href="video.css">
+  <link rel="stylesheet" href="/common.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <header>
+    <div class="container header-content">
+      <h1 class="logo"><a id="logo-link" href="/landPage/index.html">Learnind</a></h1>
+      <nav>
+        <ul></ul>
+      </nav>
+      <div class="profile">
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Perfil" onclick="window.location.href='../perfil/perfil.html'" class="avatar">
+      </div>
+    </div>
+  </header>
+
+  <main class="main-container">
+    <section class="content">
+      
+      <div class="video-player">
+        <iframe id="player-youtube" src="" title="Aula" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="display: none; width: 100%; height: 100%; min-height: 400px;"></iframe>
+        
+        <video id="player-mp4" controls style="display: none; width: 100%; height: 100%; min-height: 400px; background: black;">
+            Seu navegador não suporta a tag de vídeo.
+        </video>
+      </div>
+
+      <div class="video-info">
+        <h2 id="video-title">Carregando...</h2>
+        <p id="video-desc" class="descricao"></p>
+        <div class="video-actions">
+          <button id="fav-btn" class="btn" aria-pressed="false" title="Adicionar aos favoritos">
+            <i class="fa-regular fa-heart" aria-hidden="true"></i>
+            <span class="fav-label">Favoritar</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="feedback">
+        <h3>Deixe seu feedback</h3>
+        <textarea id="feedback-text" placeholder="O que achou da aula?"></textarea>
+        <button id="feedback-send">Enviar</button>
+        <div id="feedback-list" style="margin-top:16px; text-align:left;"></div>
+      </div>
+
+      <div class="ai-quiz-container" style="margin-top: 30px; border-top: 1px solid #e5e7eb; padding-top: 20px;">
+        <div class="quiz-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <h3 style="color: #0078d4; margin: 0;"><i class="fa-solid fa-robot"></i> Estudo Inteligente (IA)</h3>
+            
+            <button class="btn-generate" onclick="gerarPerguntasIA()" style="background-color: #0078d4; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold;">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Gerar Questões
+            </button>
+        </div>
+
+        <div id="quiz-output">
+            <p style="color: #6b7280; font-size: 0.9rem; padding: 10px 0; background-color: #f9fafb; border-radius: 8px; text-align: center;">
+                Clique no botão acima para a IA assistir a aula e criar um teste para você.
+            </p>
+        </div>
+      </div>
+      </section>
+  </main>
+    
+  <footer>
+    <p>© 2025 Learnind — <a href="#">Termos</a> • <a href="#">Privacidade</a></p>
+  </footer>
+
+  <script>
+    // --- 1. FUNÇÃO DA IA (CONECTADA AO JAVA) ---
+    async function gerarPerguntasIA() {
+        const outputDiv = document.getElementById('quiz-output');
+        const videoId = getQueryParam('id') || getQueryParam('id_video'); 
+
+        if (!videoId) {
+            alert("Não foi possível identificar o vídeo. Verifique se a URL tem ?id=...");
+            return;
+        }
+        
+        // Exibe Loading
+        outputDiv.innerHTML = `
+            <div class="loading-quiz" style="text-align: center; padding: 30px; color: #0078d4;">
+                <i class="fa-solid fa-circle-notch fa-spin" style="font-size: 2rem; margin-bottom: 15px;"></i><br>
+                <strong>A IA está assistindo à aula...</strong><br>
+                <span style="font-size: 0.9rem; color: #666;">Isso pode levar de 2 a 3 minutos. Não feche a página.</span>
+            </div>
+        `;
+
+        try {
+            // Chama a rota /video/ia
+            const response = await fetch(`/video/ia?id=${videoId}`);
+            const data = await response.json();
+
+            // Exibe Resultado
+            if (data.perguntas) {
+                const textoFormatado = data.perguntas.replace(/\n/g, '<br>');
+
+                outputDiv.innerHTML = `
+                    <div style="background: #ffffff; padding: 25px; border-radius: 12px; border: 1px solid #e5e7eb; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+                        <h3 style="color: #111827; margin-bottom: 20px; border-bottom: 2px solid #0078d4; padding-bottom: 10px;">
+                            <i class="fa-solid fa-check-circle" style="color: #0078d4;"></i> Questões Geradas
+                        </h3>
+                        <div style="color: #374151; line-height: 1.8; font-size: 1rem; font-family: sans-serif;">
+                            ${textoFormatado}
+                        </div>
+                        <div style="margin-top: 20px; text-align: right;">
+                            <button onclick="document.getElementById('quiz-output').innerHTML=''" style="background: #f3f4f6; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; color: #555;">
+                                Limpar
+                            </button>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // Mostra erro vindo do Java (ex: Erro IA: ...)
+                throw new Error(data.error || "A IA não retornou perguntas.");
+            }
+
+        } catch (erro) {
+            console.error("Erro na IA:", erro);
+            outputDiv.innerHTML = `
+                <div style="text-align:center; color:#b91c1c; padding: 20px; background: #fef2f2; border: 1px solid #fca5a5; border-radius: 8px;">
+                    <i class="fa-solid fa-triangle-exclamation" style="font-size: 1.5rem; margin-bottom: 10px;"></i><br>
+                    <strong>Ops! Ocorreu um erro.</strong><br>
+                    ${erro.message || "Tente novamente mais tarde."}
+                </div>
+            `;
+        }
+    }
+
+    // --- 2. FUNÇÕES UTILITÁRIAS ---
+    function getQueryParam(name) {
+      const url = new URL(window.location.href);
+      return url.searchParams.get(name);
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    // --- 3. CARREGAMENTO DO VÍDEO (HÍBRIDO YOUTUBE/MP4) ---
+    async function loadVideo() {
+      const id = getQueryParam('id');
+      if (!id) {
+        document.getElementById('video-title').textContent = 'Vídeo não especificado';
+        return;
+      }
+      try {
+        console.log('[video] calling /video/get id=', id);
+        const res = await fetch(`/video/get?id=${id}`, { credentials: 'include' });
+        
+        if (res.status === 404) {
+          document.getElementById('video-title').textContent = 'Vídeo não encontrado';
+          return;
+        }
+        if (!res.ok) {
+          updateFavButton(false);
+          return;
+        }
+        
+        const json = await res.json();
+        const v = json.video;
+        const favorited = Boolean(json.favorited);
+        
+        // Textos
+        document.getElementById('video-title').textContent = v.titulo || 'Sem título';
+        document.getElementById('video-desc').textContent = v.descricao || '';
+        
+        // --- SELEÇÃO DE PLAYER ---
+        const playerYT = document.getElementById('player-youtube');
+        const playerMP4 = document.getElementById('player-mp4');
+        const url = v.url || "";
+
+        if (url.includes('youtube.com') || url.includes('youtu.be')) {
+            // É YouTube
+            let vidId = null;
+            if (url.includes('v=')) vidId = url.split('v=')[1];
+            else if (url.includes('youtu.be/')) vidId = url.split('youtu.be/')[1];
+            if (vidId && vidId.includes('&')) vidId = vidId.split('&')[0];
+
+            playerYT.src = `https://www.youtube.com/embed/${vidId}`;
+            playerYT.style.display = 'block';
+            playerMP4.style.display = 'none';
+            playerMP4.pause();
+        } else {
+            // É Arquivo Direto (MP4 para IA)
+            playerMP4.src = url;
+            playerMP4.style.display = 'block';
+            playerYT.style.display = 'none';
+            playerYT.src = "";
+        }
+        // -------------------------
+        
+        // Botão Favorito
+        const favBtn = document.getElementById('fav-btn');
+        favBtn.dataset.videoId = v.idVideo;
+        
+        try {
+          const checkRes = await fetch(`/favorito/check?id=${encodeURIComponent(v.idVideo)}`, { credentials: 'include' });
+          if (checkRes && checkRes.ok) {
+            const checkJson = await checkRes.json();
+            try { updateFavButton(Boolean(checkJson.favorited)); } catch (e) {}
+          } else {
+            try { updateFavButton(favorited); } catch (e) {}
+          }
+        } catch (e) {
+          try { updateFavButton(favorited); } catch (err) {}
+        }
+      } catch (e) {
+        console.error('[video] error loading video detail', e);
+        updateFavButton(false);
+      }
+    }
+
+    // Inicialização
+    document.addEventListener('DOMContentLoaded', () => {
+      loadVideo();
+      // Feedbacks
+      (async () => {
+        setTimeout(() => loadFeedbacks(), 200);
+      })();
+
+      // Favoritos Logic
+      document.addEventListener('visibilitychange', async () => {
+        if (document.visibilityState === 'visible') {
+          // Re-check favorite logic if needed
+        }
+      });
+
+      const favBtn = document.getElementById('fav-btn');
+      favBtn.addEventListener('click', async (e) => {
+        const btn = e.currentTarget;
+        const vid = btn.dataset.videoId;
+        if (!vid) return;
+        const body = new URLSearchParams();
+        body.append('id_video', String(vid));
+        try {
+          const res = await fetch('/favorito/add', { method: 'POST', body: body, credentials: 'include' });
+          if (res.ok) {
+            alert('Vídeo favoritado com sucesso!');
+            try { updateFavButton(true); } catch (e) {}
+          } else if (res.status === 401) {
+            window.location.href = '/login/login.html';
+          } else if (res.status === 409) {
+            alert('Este vídeo já está nos seus favoritos.');
+            try { updateFavButton(true); } catch (e) {}
+          } else {
+            const txt = await res.text().catch(() => 'Erro');
+            alert(txt || 'Erro ao favoritar');
+          }
+        } catch (err) {
+          console.error(err);
+          alert('Erro de rede ao favoritar');
+        }
+      });
+
+      function updateFavButton(fav) {
+        const btn = document.getElementById('fav-btn');
+        const icon = btn.querySelector('i');
+        const label = btn.querySelector('.fav-label');
+        if (fav) {
+          btn.classList.add('favorited');
+          btn.setAttribute('aria-pressed', 'true');
+          btn.setAttribute('title', 'Já favoritado');
+          icon.classList.remove('fa-regular');
+          icon.classList.add('fa-solid');
+          icon.style.color = '#e11d48'; 
+          label.textContent = 'Já favoritado';
+        } else {
+          btn.classList.remove('favorited');
+          btn.setAttribute('aria-pressed', 'false');
+          btn.setAttribute('title', 'Adicionar aos favoritos');
+          icon.classList.remove('fa-solid');
+          icon.classList.add('fa-regular');
+          icon.style.color = '';
+          label.textContent = 'Favoritar';
+        }
+      }
+    });
+    
+    // Feedback Loader
+    async function loadFeedbacks() {
+      const id = getQueryParam('id');
+      if (!id) return;
+      try {
+        const res = await fetch(`/feedbacks?videoId=${encodeURIComponent(id)}`, { credentials: 'include' });
+        if (!res.ok) return;
+        const list = await res.json();
+        const container = document.getElementById('feedback-list');
+        container.innerHTML = '';
+          if (!Array.isArray(list) || list.length === 0) {
+            container.innerHTML = '<p style="color:#6b7280;">Seja o primeiro a comentar.</p>';
+            return;
+          }
+          for (const content of list) {
+            const node = document.createElement('div');
+            node.className = 'feedback-item';
+            node.style.padding = '8px 10px';
+            node.style.border = '1px solid #e5e7eb';
+            node.style.borderRadius = '8px';
+            node.style.marginBottom = '8px';
+            node.innerHTML = `<div style="font-size:0.95rem;color:#374151;">${escapeHtml(content)}</div>`;
+            container.appendChild(node);
+          }
+      } catch (e) { console.error(e); }
+    }
+
+    document.getElementById('feedback-send').addEventListener('click', async (e) => {
+      const txt = document.getElementById('feedback-text');
+      const content = txt.value && txt.value.trim();
+      const id = getQueryParam('id');
+      if (!id || !content) { alert('Preencha o comentário'); return; }
+      const body = new URLSearchParams();
+      body.append('id_video', String(id));
+      body.append('conteudo', content);
+      try {
+        const res = await fetch('/feedback/add', { method: 'POST', body: body, credentials: 'include' });
+        if (res.ok) { txt.value = ''; loadFeedbacks(); } 
+        else if (res.status === 401) window.location.href = '/login/login.html';
+        else alert('Erro ao enviar');
+      } catch (err) { alert('Erro de rede'); }
+    });
+  </script>
+</body>
+</html>

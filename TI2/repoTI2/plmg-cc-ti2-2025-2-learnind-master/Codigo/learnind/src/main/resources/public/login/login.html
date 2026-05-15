@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | Learnind</title>
+  <link rel="stylesheet" href="login.css">
+  <link rel="stylesheet" href="/common.css">
+</head>
+<body>
+  <!-- ====== HEADER ====== -->
+  <header>
+    <div class="container header-content">
+      <h1 class="logo"><a id="logo-link" href="/landPage/index.html">Learnind</a></h1>
+      <nav>
+        <ul>
+          <!-- navigation links removed; only on landing page -->
+        </ul>
+      </nav>
+      <div class="buttons">
+         <button class="login" onclick="window.location.href='../login/login.html'">Login</button>
+        <button class="cadastro" onclick="window.location.href='../cadastro/cadastro.html'">Cadastro</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ====== MAIN ====== -->
+  <main class="login-wrapper">
+    <div class="login-box">
+      <div class="image-side">
+        <img src="img_Login.png" alt="Pessoa estudando online">
+      </div>
+
+      <div class="form-side">
+        <h2>Bem-vindo de volta!</h2>
+        <p class="subtitle">Faça login para acessar sua conta e continuar aprendendo.</p>
+
+        <form action="/usuario/login" method="post">
+          <label>Email</label>
+          <input type="email" name="email" placeholder="Seu email" required>
+
+          <label>Senha</label>
+          <input type="password" name="senha" placeholder="Sua senha" required>
+
+          <a href="#" class="forgot">Esqueceu a senha?</a>
+
+          <button type="submit" class="btn-login">Entrar</button>
+
+          <p class="register-text">
+            Ainda não tem uma conta? <a href="../cadastro/cadastro.html">Cadastre-se aqui</a>.
+          </p>
+        </form>
+        <div id="login-error" style="color:crimson;margin-top:8px;display:none;">Email ou senha inválidos.</div>
+
+        <script>
+          // show error message if redirected with ?error=1
+          if (location.search.indexOf('error=1') >= 0) {
+            document.getElementById('login-error').style.display = 'block';
+          }
+        </script>
+      </div>
+    </div>
+  </main>
+
+  <!-- ====== FOOTER ====== -->
+  <footer>
+    <p>© 2025 Learnind — Todos os direitos reservados.</p>
+  </footer>
+  <script src="/js/session.js"></script>
+  <script>
+    // if already logged in, go to dashboard directly
+    isLogged().then(function(logged) {
+      if (logged) {
+        window.location.href = '/homePage/dashboard.html';
+      }
+    }).catch(function(){});
+  </script>
+  <script>
+    // set logo link depending on auth state (logged -> dashboard, else -> landing)
+    (async () => {
+      try {
+        const logged = await isLogged();
+        const el = document.getElementById('logo-link');
+        if (el) el.href = logged ? '/homePage/dashboard.html' : '/landPage/index.html';
+      } catch (e) {
+        const el = document.getElementById('logo-link');
+        if (el) el.href = '/landPage/index.html';
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Editar Perfil - Learnind</title>
+  <link rel="stylesheet" href="editarPerfil.css" />
+  <link rel="stylesheet" href="/common.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="container header-content">
+      <h1 class="logo"><a id="logo-link" href="/landPage/index.html">Learnind</a></h1>
+
+      <!-- search removed on this page (only on dashboard) -->
+
+      <nav>
+        <ul>
+          <!-- navigation links removed; kept empty intentionally -->
+        </ul>
+      </nav>
+
+      <div class="profile">
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Perfil" onclick="window.location.href='../perfil/perfil.html'" class="avatar" />
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== CONTEÚDO PRINCIPAL ===== -->
+  <main class="edit-container">
+    <section class="edit-card">
+      <h2><i class="fa-solid fa-user-pen"></i> Editar Perfil</h2>
+      <p>Atualize suas informações pessoais abaixo:</p>
+
+      <form class="edit-form" action="/usuario/me/update" method="post">
+        <div class="form-group">
+          <label for="nome">Nome completo</label>
+          <input type="text" id="nome" name="nome" value="" />
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" value="" />
+        </div>
+
+        <div class="form-group">
+          <label for="nascimento">Data de nascimento</label>
+          <input type="date" id="nascimento" name="data_nascimento" value="" />
+        </div>
+
+        <div class="form-group">
+          <label for="sexo">Sexo</label>
+          <select id="sexo" name="sexo">
+            <option value="M">Masculino</option>
+            <option value="F">Feminino</option>
+            <option value="O">Outro</option>
+          </select>
+        </div>
+
+        <hr class="divider" />
+
+        <h3>Alterar Senha</h3>
+
+        <div class="form-group">
+          <label for="nova-senha">Nova senha</label>
+          <input type="password" id="nova-senha" name="senha" placeholder="Digite a nova senha" />
+        </div>
+
+        <div class="buttons">
+          <button type="submit" class="btn save"><i class="fa-solid fa-check"></i> Salvar Alterações</button>
+          <button type="button" class="btn cancel" onclick="window.location.href='../perfil/perfil.html'"><i class="fa-solid fa-xmark"></i> Cancelar</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    // fetch current user and populate the form
+    fetch('/usuario/me').then(r => {
+      if (!r.ok) throw new Error('Não autenticado');
+      return r.json();
+    }).then(u => {
+      document.getElementById('nome').value = u.nome || '';
+      document.getElementById('email').value = u.email || '';
+      if (u.dataNascimento) document.getElementById('nascimento').value = u.dataNascimento;
+      if (u.sexo) document.getElementById('sexo').value = u.sexo;
+    }).catch(e => {
+      // redirect to login if not authenticated
+      window.location.href = '/login/login.html';
+    });
+  </script>
+
+  <script>
+    // set logo link depending on auth state (logged -> dashboard, else -> landing)
+    (async () => {
+      try {
+        const res = await fetch('/usuario/me', { credentials: 'same-origin' });
+        const el = document.getElementById('logo-link');
+        if (el) el.href = (res && res.ok) ? '/homePage/dashboard.html' : '/landPage/index.html';
+      } catch (e) {
+        const el = document.getElementById('logo-link');
+        if (el) el.href = '/landPage/index.html';
+      }
+    })();
+  </script>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <p>© 2025 Learnind — <a href="#">Termos</a> • <a href="#">Privacidade</a></p>
+  </footer>
+</body>
+</html>

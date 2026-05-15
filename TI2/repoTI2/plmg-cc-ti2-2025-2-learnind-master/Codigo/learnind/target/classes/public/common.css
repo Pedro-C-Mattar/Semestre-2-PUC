@@ -1,0 +1,34 @@
+/* Shared styles for logo and common header tweaks */
+/* Logo link appearance: slightly larger, white, no underline, normal link appearance */
+.logo a#logo-link {
+  color: #ffffff !important;
+  text-decoration: none !important;
+  font-size: 1.4rem;
+  font-weight: 700;
+  display: inline-block;
+  line-height: 1;
+}
+
+.logo a#logo-link:hover,
+.logo a#logo-link:focus {
+  text-decoration: none !important;
+  color: #ffffff !important;
+  opacity: 0.95;
+}
+
+/* Ensure nav empty state doesn't collapse layout badly */
+.header-content nav ul {
+  display: flex;
+  gap: 16px;
+  list-style: none;
+}
+
+/* Small utility to hide empty nav gracefully */
+.header-content nav ul:empty {
+  display: none;
+}
+
+/* Enable smooth scrolling for anchor navigation */
+html {
+  scroll-behavior: smooth;
+}
